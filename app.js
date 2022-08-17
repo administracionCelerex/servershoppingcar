@@ -13,10 +13,29 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 app.get("/products", (req, res) => {
-  res.send("productos");
+  ProductModel.find()
+    .then((products) => {
+      console.log(products);
+      //res.send("productos");
+      res.json({ products: products }).status(200);
+    })
+    .catch((err) => console.log(err));
 });
 app.post("/products", (req, res) => {
-  res.send("insert new product");
+  //res.send("insert new product");
+
+  const product = new ProductModel({
+    name: "Teclado",
+    description: "jdkashdasd",
+    price: 500,
+  });
+
+  product
+    .save()
+    .then((productInserted) => {
+      res.json({ productInserted }).status(200);
+    })
+    .catch((err) => console.log(err));
 });
 
 try {
